@@ -7,19 +7,24 @@ const ERC777 = artifacts.require("Simple777Token");
 // assigns the initial total supply to the creator
 // allows operator burn
 
-contract("Token Test", async (accounts) => {
+contract("Token Test", async ([_, registryFunder, creator, operator]) => {
   let contract;
   beforeEach(async () => {
     contract = await ERC777.deployed();
   });
 
   it("has a name", async () => {
-    const name = await contract.name();
-    expect(name).to.equal("Simple777Token");
+    expect(await contract.name()).to.equal("Simple777Token");
   });
 
   it("has a symbol", async () => {
-    const symbol = await contract.symbol();
-    expect(symbol).to.equal("S7");
+    expect(await contract.symbol()).to.equal("S7");
+  });
+
+  it("assigns the initial total supply to the creator", async () => {
+    const totalSupply = await contract.totalSupply();
+    const creator = await contract.creator();
+    const creatorBalance = await contract.balanceOf(creator);
+    expect(totalSupply.toString()).to.equal(creatorBalance.toString());
   });
 });
