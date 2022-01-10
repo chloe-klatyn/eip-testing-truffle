@@ -2,7 +2,7 @@ const { expect } = require("chai");
 
 const ERC777 = artifacts.require("Simple777Token");
 
-contract("Token Test", async ([_, registryFunder, creator, operator]) => {
+contract("Token Test", async ([creator, operator, recipient]) => {
   let contract;
   let msgSender;
   beforeEach(async () => {
@@ -19,8 +19,7 @@ contract("Token Test", async ([_, registryFunder, creator, operator]) => {
 
   it("assigns the initial total supply to the creator", async () => {
     const totalSupply = await contract.totalSupply();
-    msgSender = await contract.creator();
-    const creatorBalance = await contract.balanceOf(msgSender);
+    const creatorBalance = await contract.balanceOf(creator);
     expect(totalSupply.toString()).to.equal(creatorBalance.toString());
   });
 
@@ -39,14 +38,25 @@ contract("Token Test", async ([_, registryFunder, creator, operator]) => {
     expect(isOperator).to.equal(false);
   });
 
+  it("allows operator send", async () => {
+    let creatorBalance = await contract.balanceOf(creator);
+    const data = web3.utils.sha3("Simple777Data");
+    const operatorData = web3.utils.sha3("Simple777OperatorData");
+
+    const amount = web3.utils.toWei(web3.utils.toBN(4000), "ether");
+    await contract.operatorSend(creator, recipient, amount, data, operatorData);
+    const recipientBalance = await contract.balanceOf(recipient);
+    expect(recipientBalance.toString()).to.equal(
+      web3.utils.toWei(web3.utils.toBN(4000), "ether").toString()
+    );
+    creatorBalance = await contract.balanceOf(creator);
+    expect(creatorBalance.toString()).to.equal(
+      web3.utils.toWei(web3.utils.toBN(6000), "ether").toString()
+    );
+  });
+
   // it("allows operator burn", async () => {
   //   const creatorBalance = await contract.balanceOf(msgSender);
-  //   const data = web3.utils.sha3("Simple777Data");
-  //   const operatorData = web3.utils.sha3("Simple777OperatorData");
-  // });
-
-  // it("allows operator send", async () => {
-  //   const creatorBalance = await contract.balanceOf(creator);
   //   const data = web3.utils.sha3("Simple777Data");
   //   const operatorData = web3.utils.sha3("Simple777OperatorData");
   // });
