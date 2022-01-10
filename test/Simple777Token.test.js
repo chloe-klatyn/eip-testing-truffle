@@ -44,7 +44,14 @@ contract("Token Test", async ([creator, operator, recipient]) => {
     const operatorData = web3.utils.sha3("Simple777OperatorData");
 
     const amount = web3.utils.toWei(web3.utils.toBN(4000), "ether");
-    await contract.operatorSend(creator, recipient, amount, data, operatorData);
+    await contract.operatorSend(
+      creator,
+      recipient,
+      amount,
+      data,
+      operatorData,
+      { from: creator }
+    );
     const recipientBalance = await contract.balanceOf(recipient);
     expect(recipientBalance.toString()).to.equal(
       web3.utils.toWei(web3.utils.toBN(4000), "ether").toString()
@@ -55,9 +62,20 @@ contract("Token Test", async ([creator, operator, recipient]) => {
     );
   });
 
-  // it("allows operator burn", async () => {
-  //   const creatorBalance = await contract.balanceOf(msgSender);
-  //   const data = web3.utils.sha3("Simple777Data");
-  //   const operatorData = web3.utils.sha3("Simple777OperatorData");
-  // });
+  it("allows operator burn", async () => {
+    let recipientBalance = await contract.balanceOf(recipient);
+    await contract.authorizeOperator(creator, { from: recipient });
+
+    const data = web3.utils.sha3("Simple777Data");
+    const operatorData = web3.utils.sha3("Simple777OperatorData");
+    const burnAmount = web3.utils.toWei(web3.utils.toBN(1000), "ether");
+    await contract.operatorBurn(recipient, burnAmount, data, operatorData, {
+      from: creator,
+    });
+
+    recipientBalance = await contract.balanceOf(recipient);
+    expect(recipientBalance.toString()).to.equal(
+      web3.utils.toWei(web3.utils.toBN(3000), "ether").toString()
+    );
+  });
 });
