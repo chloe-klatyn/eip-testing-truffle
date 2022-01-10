@@ -24,20 +24,20 @@ contract("Token Test", async ([_, registryFunder, creator, operator]) => {
     expect(totalSupply.toString()).to.equal(creatorBalance.toString());
   });
 
-  it("successfully assigns addresses as operators", async () => {
+  it("successfully authorizes and revokes operators", async () => {
     let isOperator = await contract.isOperatorFor(operator, creator);
     expect(isOperator).to.equal(false);
-    contract.authorizeOperator(operator, {
+    await contract.authorizeOperator(operator, {
       from: creator,
     });
     isOperator = await contract.isOperatorFor(operator, creator);
     expect(isOperator).to.equal(true);
+    contract.revokeOperator(operator, {
+      from: creator,
+    });
+    isOperator = await contract.isOperatorFor(operator, creator);
+    expect(isOperator).to.equal(false);
   });
-
-  // it("successfully revokes operators", async () => {
-  //   const revoke = await contract.revokeOperator(creator);
-  //   const allOperators = await contract.defaultOperators();
-  // });
 
   // it("allows operator burn", async () => {
   //   const creatorBalance = await contract.balanceOf(msgSender);
