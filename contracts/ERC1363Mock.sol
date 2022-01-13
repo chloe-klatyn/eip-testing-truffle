@@ -6,6 +6,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 // mock class using ERC1363
 contract ERC1363Mock is ERC1363, Ownable {
+    address private caller;
+
+    event Caller(address caller);
+
     /**
      * @dev Constructor that gives msg.sender all of existing tokens.
      */
@@ -16,5 +20,18 @@ contract ERC1363Mock is ERC1363, Ownable {
         uint256 initialBalance
     ) ERC20(name, symbol) {
         _mint(initialAccount, initialBalance);
+    }
+
+    function transferAndCall(address recipient, uint256 amount)
+        public
+        override
+        returns (bool)
+    {
+        emit Caller(msg.sender);
+        return transferAndCall(recipient, amount, "");
+    }
+
+    function checkCaller() public {
+        emit Caller(msg.sender);
     }
 }
