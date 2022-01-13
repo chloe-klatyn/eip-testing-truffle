@@ -2,6 +2,8 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.1",
     "@truffle/hdwallet-provider": "^2.0.0",
-    "dotenv": "^10.0.0"
+    "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
+    "erc-payable-token": "^4.4.1"
   }
 }
