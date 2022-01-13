@@ -59,21 +59,21 @@ contract("ERC1363", async ([owner, crowdsaleWallet, spender, recipient]) => {
     });
   });
 
-  //   describe("Crowdsale Contract Deployment", () => {
-  //     it("sets the owner of the contract as owner", async () => {
-  //       expect(await erc1363.owner()).to.equal(owner.address);
-  //     });
+  describe("Crowdsale Contract Deployment", () => {
+    it("sets the owner of the contract", async () => {
+      expect(await erc1363.owner()).to.equal(owner);
+    });
 
-  //     it("sets the token to be distributed as the crowdsale token", async () => {
-  //       expect(await crowdsaleContract.token()).to.equal(crowdsaleToken.address);
-  //     });
+    it("sets the token to be distributed as the crowdsale token", async () => {
+      expect(await crowdsaleContract.token()).to.equal(crowdsaleToken.address);
+    });
 
-  //     it("sets the accepted token as the ERC1363 token", async () => {
-  //       expect(await crowdsaleContract.acceptedToken()).to.equal(erc1363.address);
-  //     });
+    it("sets the accepted token as the ERC1363 token", async () => {
+      expect(await crowdsaleContract.acceptedToken()).to.equal(erc1363.address);
+    });
 
-  //     it("sets the distribution rate to the value declared in the constructor", async () => {
-  //       expect(await crowdsaleContract.rate()).to.equal(10);
-  //     });
-  //   });
+    it("sets the distribution rate to the value declared in the constructor", async () => {
+      expect((await crowdsaleContract.rate()).toString()).to.equal("10");
+    });
+  });
 });

@@ -5,6 +5,7 @@ const CrowdsaleContract = artifacts.require("CrowdsaleContract");
 module.exports = async function (deployer, network, accounts) {
   let erc1363Address;
   let crowdsaleTokenAddress;
+  let crowdsaleContractAddress;
 
   await deployer
     .deploy(ERC1363, "ERC1363Token", "ERC1363", accounts[0], 10000)
@@ -25,6 +26,6 @@ module.exports = async function (deployer, network, accounts) {
       erc1363Address
     )
     .then((crowdsaleContract) => {
-      console.log("crowdsaleContract: ", crowdsaleContract.address);
+      crowdsaleContractAddress = crowdsaleContract.address;
     });
 };
