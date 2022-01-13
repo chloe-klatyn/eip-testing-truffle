@@ -34,4 +34,15 @@ contract ERC1363Mock is ERC1363, Ownable {
     function checkCaller() public {
         emit Caller(msg.sender);
     }
+
+    function transfer(address recipient, uint256 amount)
+        public
+        virtual
+        override
+        returns (bool)
+    {
+        _transfer(_msgSender(), recipient, amount);
+        emit Caller(msg.sender);
+        return true;
+    }
 }

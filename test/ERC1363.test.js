@@ -3,7 +3,7 @@ const ERC1363 = artifacts.require('ERC1363Mock')
 const CrowdsaleToken = artifacts.require('CrowdsaleToken')
 const CrowdsaleContract = artifacts.require('CrowdsaleContract')
 
-contract('ERC1363', async ([owner, crowdsaleWallet, spender, recipient]) => {
+contract('ERC1363', async ([owner, spender, recipient, crowdsaleWallet]) => {
   let erc1363
   let crowdsaleToken
   let crowdsaleContract
@@ -70,25 +70,23 @@ contract('ERC1363', async ([owner, crowdsaleWallet, spender, recipient]) => {
 
   describe('receiving payment using transferAndCall', () => {
     beforeEach(async function () {
-      await erc1363.approve(spender, 100, { from: owner })
+      await erc1363.approve(spender, 1000, { from: owner })
+      await erc1363.approve(erc1363.address, 999, { from: owner })
+
       //   const caller = await erc1363.checkCaller({ from: spender })
       //   console.log('caller: ', caller.receipt.logs[0].args.caller)
       const spenderAllowance = await erc1363.allowance(owner, spender)
-      //   console.log('spender allowance: ', spenderAllowance.toString())
+      console.log('spender allowance: ', spenderAllowance.toString())
     })
 
     it('should accept payments', async () => {
-      try {
-        // console.log('owner balance: ', (await erc1363.balanceOf(owner)).toString())
-        await erc1363.transfer(spender, 1000)
-        // console.log('spender balance: ', (await erc1363.balanceOf(spender)).toString())
-        await erc1363.transferFrom(owner, recipient, 50, { from: spender })
-        // console.log('spender balance: ', (await erc1363.balanceOf(spender)).toString())
+      await erc1363.transferFrom(owner, erc1363.address, 100, { from: spender })
+      await erc1363.transferAndCall(crowdsaleContract.address, 100)
 
-        // await erc1363.transferFromAndCall(spender, crowdsaleContract.address, 10)
-      } catch (err) {
-        console.log(err)
-      }
+      console.log('owner balance: ', (await erc1363.balanceOf(owner)).toString())
+      console.log('spender balance: ', (await erc1363.balanceOf(spender)).toString())
+      console.log('recipient balance: ', (await erc1363.balanceOf(recipient)).toString())
+      console.log('erc1363 balance: ', (await erc1363.balanceOf(erc1363.address)).toString())
     })
 
     //     it("should log purchase event", async () => {});
