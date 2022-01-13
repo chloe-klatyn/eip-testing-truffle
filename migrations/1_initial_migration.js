@@ -16,9 +16,6 @@ module.exports = async function (deployer, network, accounts) {
     crowdsaleTokenAddress = crwd.address;
   });
 
-  // console.log("erc1363 address: ", erc1363Address);
-  // console.log("crwd address: ", crowdsaleTokenAddress);
-
   await deployer
     .deploy(
       CrowdsaleContract,
