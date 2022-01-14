@@ -22,27 +22,47 @@ contract ERC1363Mock is ERC1363, Ownable {
         _mint(initialAccount, initialBalance);
     }
 
-    function transferAndCall(address recipient, uint256 amount)
-        public
-        override
-        returns (bool)
-    {
-        emit Caller(msg.sender);
-        return transferAndCall(recipient, amount, "");
-    }
+    // function transferAndCall(address recipient, uint256 amount)
+    //     public
+    //     override
+    //     returns (bool)
+    // {
+    //     emit Caller(msg.sender);
+    //     return transferAndCall(recipient, amount, "");
+    // }
 
     function checkCaller() public {
         emit Caller(msg.sender);
     }
 
-    function transfer(address recipient, uint256 amount)
+    function transferAndCallCheck1(address recipient, uint256 amount)
         public
         virtual
-        override
         returns (bool)
     {
-        _transfer(_msgSender(), recipient, amount);
+        return transferAndCallCheck2(recipient, amount, "");
+    }
+
+    function transferAndCallCheck2(
+        address recipient,
+        uint256 amount,
+        bytes memory data
+    ) public returns (bool) {
+        transferCheck(recipient, amount);
+        require(
+            _checkAndCallTransfer(_msgSender(), recipient, amount, data),
+            "ERC1363: _checkAndCallTransfer reverts"
+        );
+        return true;
+    }
+
+    function transferCheck(address recipient, uint256 amount)
+        public
+        virtual
+        returns (bool)
+    {
         emit Caller(msg.sender);
+        _transfer(_msgSender(), recipient, amount);
         return true;
     }
 }
