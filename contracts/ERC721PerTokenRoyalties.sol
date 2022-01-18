@@ -9,7 +9,7 @@ import './ERC2981PerTokenRoyalties.sol';
 /// @title Example of ERC721 contract with ERC2981
 /// @author Simon Fremaux (@dievardump)
 /// @notice This is a mock, mint and mintBatch are not protected. Please do not use as-is in production
-contract ERC721WithRoyalties is ERC721, ERC2981PerTokenRoyalties {
+contract ERC721PerTokenRoyalties is ERC721, ERC2981PerTokenRoyalties {
     uint256 nextTokenId;
 
     constructor(string memory name_, string memory symbol_)
