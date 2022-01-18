@@ -22,7 +22,7 @@ contract("Token Test", async ([contractOwner, seller1]) => {
     });
   });
 
-  describe("Minting and Royalties", () => {
+  describe("Setting Royalties", () => {
     it("mints the correct amount of tokens to seller", async () => {
       let tokenBalance = await erc721.balanceOf(seller1);
       await erc721.mint(seller1);
@@ -69,5 +69,16 @@ contract("Token Test", async ([contractOwner, seller1]) => {
       expect(royalties0[1].toString()).to.equal("6");
       expect(royalties1[1].toString()).to.equal("10");
     });
+  });
+
+  describe("Editing Royalties", () => {
+    beforeEach(async () => {
+      await erc721.mint(seller1);
+      await erc721.mint(seller1);
+    });
+
+    it("Updates token royalties", async () => {});
+    it("Removes default royalties", async () => {});
+    it("Resets token royalties", async () => {});
   });
 });
