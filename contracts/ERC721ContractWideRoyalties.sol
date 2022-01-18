@@ -48,6 +48,10 @@ contract ERC721ContractWideRoyalties is ERC721, ERC2981, Ownable {
         _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
+    function deleteDefaultRoyalty() public {
+        _deleteDefaultRoyalty();
+    }
+
     /// @notice Mint one token to `to`
     /// @param to the recipient of the token
     function mint(address to) external returns (uint256 _tokenId) {

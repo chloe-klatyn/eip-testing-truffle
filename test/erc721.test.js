@@ -81,13 +81,17 @@ contract("Token Test", async ([contractOwner, seller1]) => {
     it("Updates token royalties", async () => {
       const newRoyalty = 800;
       let royalties = await erc721.royaltyInfo(tokenId, 100);
-
       await erc721.setDefaultRoyalty(contractOwner, newRoyalty);
       royalties = await erc721.royaltyInfo(tokenId, 100);
       expect(royalties[1].toString()).to.equal("8");
     });
 
-    it("Removes default royalties", async () => {});
+    it("Removes default royalties", async () => {
+      await erc721.deleteDefaultRoyalty();
+      royalties = await erc721.royaltyInfo(tokenId, 100);
+      expect(royalties[1].toString()).to.equal("0");
+    });
+
     it("Resets token royalties", async () => {});
   });
 });
