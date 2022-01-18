@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: Unlicense
+//SPDX-License-Identifier: MIT
 // Adapted from https://github.com/dievardump/EIP2981-implementation
 
 pragma solidity ^0.8.4;
