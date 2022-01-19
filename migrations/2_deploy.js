@@ -7,6 +7,7 @@ module.exports = async function (deployer, network, accounts) {
     .then((contract) => {
       console.log("ERC721 deployed to: ", contract.address);
     });
+
   await deployer
     .deploy(ERC721PerToken, "ERC721PerTokenRoyalties", "ERC721v2")
     .then((contract) => {

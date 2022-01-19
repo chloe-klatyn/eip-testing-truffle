@@ -36,7 +36,7 @@ contract ERC721PerTokenRoyalties is ERC721, ERC2981PerTokenRoyalties, Ownable {
         address to,
         address royaltyRecipient,
         uint256 royaltyValue
-    ) external {
+    ) external returns(uint _tokenId) {
         uint256 tokenId = nextTokenId;
         _safeMint(to, tokenId, '');
 
@@ -45,6 +45,7 @@ contract ERC721PerTokenRoyalties is ERC721, ERC2981PerTokenRoyalties, Ownable {
         }
 
         nextTokenId = tokenId + 1;
+        return tokenId; 
     }
 
     /// @notice Mint several tokens at once
